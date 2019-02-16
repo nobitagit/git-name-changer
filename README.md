@@ -9,7 +9,7 @@ See https://www.git-tower.com/learn/git/faq/change-author-name-email
 Download and execute the file from your target repo
 
 ```sh
-$ name_changer
+$ ./name_changer
 ```
 
 LICENSE: MIT
