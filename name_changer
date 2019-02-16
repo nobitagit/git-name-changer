@@ -1,0 +1,55 @@
+#!/bin/bash
+
+clear
+
+echo "What is the WRONG email address, i.e. the one you want to change?"
+read WRONG_EMAIL
+
+echo "What is the CORRECT author name?"
+read CORRECT_NAME
+
+echo "What is the CORRECT email address?"
+read CORRECT_EMAIL
+
+rewrite()
+{
+  git filter-branch --env-filter '
+  if [ "$GIT_COMMITTER_EMAIL" = "$WRONG_EMAIL" ]
+  then
+      export GIT_COMMITTER_NAME="$CORRECT_NAME"
+      export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+  fi
+  if [ "$GIT_AUTHOR_EMAIL" = "$WRONG_EMAIL" ]
+  then
+      export GIT_AUTHOR_NAME="$CORRECT_NAME"
+      export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+  fi
+  ' --tag-name-filter cat -- --branches --tags
+}
+
+check()
+{
+  echo ""
+  echo "Please check the details are correct:"
+  echo "          Wrong email: $WRONG_EMAIL"
+  echo "  Correct author name: $CORRECT_NAME"
+  echo "Correct email address: $CORRECT_EMAIL"
+  echo ""
+  echo "Should I proceed and rewrite the git history with the new details? Y/N"
+  read ARE_YOU_REALLY_SURE
+
+  if [ $ARE_YOU_REALLY_SURE == 'Y' ]; then
+    rewrite
+    echo "Done."
+    exit 0
+  elif [ $ARE_YOU_REALLY_SURE == 'N' ]; then
+    echo "Bye."
+    exit 0
+  else
+    echo "Unknown command"
+    check
+  fi
+}
+
+check
+
