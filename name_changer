@@ -1,7 +1,5 @@
 #!/bin/bash
 
-IFS=$'\n'
-
 clear
 
 echo "What is the WRONG email address, i.e. the one you want to change?"
