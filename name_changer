@@ -3,6 +3,7 @@
 clear
 
 echo "What is the WRONG email address, i.e. the one you want to change?"
+echo "Hint: leave empty and press Return if you want to target commits without email address)"
 read WRONG_EMAIL
 
 echo "What is the CORRECT author name?"
