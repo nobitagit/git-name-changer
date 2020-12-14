@@ -3,7 +3,6 @@
 clear
 
 echo "What is the WRONG email address, i.e. the one you want to change?"
-echo "Hint: leave empty and press Return if you want to target commits without email address)"
 read WRONG_EMAIL
 
 echo "What is the CORRECT author name?"
@@ -31,6 +30,25 @@ rewrite()
   ' --tag-name-filter cat -- --branches --tags
 }
 
+store_committer()
+{
+  echo "Should I set these details in the git config for this repo as the default committer? Y/N"
+  read STORE_COMMITTER_Y_N
+
+  if [ $STORE_COMMITTER_Y_N == 'Y' ]; then
+    git config user.name $CORRECT_NAME
+    git config user.email $CORRECT_EMAIL
+    echo "Done."
+    exit 0
+  elif [ $STORE_COMMITTER_Y_N == 'N' ]; then
+    echo "Bye."
+    exit 0
+  else
+    echo "Unknown command"
+    store_committer
+  fi
+}
+
 check()
 {
   echo ""
@@ -40,20 +58,21 @@ check()
   echo "Correct email address: $CORRECT_EMAIL"
   echo ""
   echo "Should I proceed and rewrite the git history with the new details? Y/N"
-  read ARE_YOU_REALLY_SURE
+  read ARE_YOU_REALLY_SURE_Y_N
 
-  if [ $ARE_YOU_REALLY_SURE == 'Y' ]; then
+  if [ $ARE_YOU_REALLY_SURE_Y_N == 'Y' ]; then
+    # https://patchwork.kernel.org/project/git/patch/20190903185524.13467-4-newren@gmail.com/
     rewrite
     echo "Done."
-    exit 0
-  elif [ $ARE_YOU_REALLY_SURE == 'N' ]; then
+  elif [ $ARE_YOU_REALLY_SURE_Y_N == 'N' ]; then
     echo "Bye."
     exit 0
   else
     echo "Unknown command"
     check
   fi
+
+  store_committer
 }
 
 check
-
