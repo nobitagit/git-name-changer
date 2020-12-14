@@ -6,7 +6,14 @@ WARNING: of course this is rewriting history, make sure you know what you are do
 See https://www.git-tower.com/learn/git/faq/change-author-name-email
 
 ## Usage
-Download and execute the file from your target repo
+Download:
+
+```sh
+curl https://raw.githubusercontent.com/nobitagit/git-name-changer/master/name_changer > name_changer
+chmod +x name_changer
+```
+
+and execute the file from your target repo
 
 ```sh
 $ ./name_changer
